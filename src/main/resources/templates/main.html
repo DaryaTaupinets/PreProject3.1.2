@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Admin panel</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
           crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-            crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
-    <title>Admin panel</title>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -46,22 +46,10 @@
         <br>
         <br>
         <br>
-        <ul class="list-group border-0">
-            <li class="list-group-item border-0 active">
-                <a data-toggle="tab"
-                   href="#admin"
-                   class="text-white">
-                    Admin
-                </a>
-            </li>
-            <li class="list-group-item border-0">
-                <a data-toggle="tab"
-                   href="#user"
-                   class="text-blue">
-                    User
-                </a>
-            </li>
-        </ul>
+        <div class="list-group border-0">
+            <a data-toggle="tab" href="#admin" class="list-group-item list-group-item-action border-0">Admin</a>
+            <a data-toggle="tab" href="#user" class="list-group-item list-group-item-action border-0">User</a>
+        </div>
     </div>
     <div class="col-10">
         <br>
@@ -74,6 +62,7 @@
             <button type="submit" class="btn btn-secondary">Find</button>
         </form>
         <div class="tab-content">
+            <br>
             <div class="tab-pane container active" id="admin">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -88,7 +77,7 @@
                         <br>
                         <h4>All users</h4>
                         <table class="table table-striped">
-                            <thead class="bg-ligte">
+                            <thead class="bg-light">
                             <tr class="active">
                                 <th>ID</th>
                                 <th>First Name</th>
@@ -120,10 +109,6 @@
                                             th:attr="data-target=${'#modalEdit' + user.getId()}">
                                         Edit
                                     </button>
-                        <!--            <a th:href="@{/edit/{id}(id=${user.id})}">
-                                        <button type="button" class="btn btn-info">Edit</button>
-                                    </a>
-                                </td>-->
                                     <!-- The Modal -->
                                     <div class="modal fade" th:id="${'modalEdit' + user.getId()}">
                                         <div class="modal-dialog ">
@@ -139,7 +124,7 @@
                                                         </div>
                                                         <!-- Modal body -->
                                                         <form class="form-singin form-horizontal"
-                                                              th:action="@{/update/{id}(id=${user.id})}"
+                                                              th:action="@{/admin/update/{id}(id=${user.id})}"
                                                               th:object="${user}"
                                                               method="post">
                                                             <div class="modal-body">
@@ -214,7 +199,7 @@
                                                         </div>
                                                         <!-- Modal body -->
                                                         <form class="form-singin form-horizontal"
-                                                              th:action="@{/delete/{id}(id=${user.id})}" method="post">
+                                                              th:action="@{/admin/delete/{id}(id=${user.id})}" method="get">
 
                                                             <div class="modal-body">
                                                                 <b><p class="text-center mt-3 mb-0">ID</p></b>
@@ -250,7 +235,7 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close
                                                                 </button>
-                                                                <button th:action="@{/delete/{id}(id=${user.id})}" type="submit"
+                                                                <button type="submit"
                                                                         class="btn btn-info">Delete
                                                                 </button>
                                                             </div>
@@ -274,7 +259,7 @@
                                     <form class="form-signin form-horizontal" th:action="@{/admin/create}"
                                           method="post">
                                         <br>
-                                        <h1>Add new user</h1>
+                                        <h4>Add new user</h4>
 
                                         <div class="container">
                                             <form method="post">
@@ -344,9 +329,9 @@
                 </div>
             </div>
             <div class="tab-pane container" id="user">
-                h1 class="font-weight-bold">User information-page</h1>
+                <h1 class="font-weight-bold">User information-page</h1>
                 <div class="tab-content">
-                    <div class="tab-pane container active" id="user">
+                    <div class="tab-pane container active">
                         <div>
                             <br>
                             <h4>About user</h4>
