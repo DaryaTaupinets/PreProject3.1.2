@@ -2,6 +2,7 @@ package ru.mail.evmenova.springbootapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,11 +24,13 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserController(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin")
@@ -69,24 +72,16 @@ public class UserController {
         return "main";
     }
 
-    @GetMapping("/admin/create")
-    public String showFormAddUser() {
-        return "new-user";
-    }
-
     @PostMapping("/admin/create")
     public String addUser(@Valid User user,
-                          BindingResult result,
                           @RequestParam(value = "role") String roleName) {
-        if (result.hasErrors()) {
-            return "new-user";
-        }
         Set<Role> roles = new HashSet<>();
         String [] split = roleName.split(",");
         for (String role : split) {
             roles.add(roleRepository.findByRoleName(role));
         }
         user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/admin";
     }
@@ -96,7 +91,7 @@ public class UserController {
                                  Model model) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id: " + id));
         model.addAttribute("user", user);
-        return "update-user";
+        return "redirect:/admin";
     }
 
     @PostMapping("/admin/update/{id}")
@@ -106,7 +101,7 @@ public class UserController {
                              @RequestParam(value = "role") String roleName) {
         if (result.hasErrors()) {
             user.setId(id);
-            return "update-user";
+            return "redirect:/admin";
         }
         Set<Role> roles = new HashSet<>();
         String[] split = roleName.split(",");

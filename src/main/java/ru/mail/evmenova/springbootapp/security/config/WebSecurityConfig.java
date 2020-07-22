@@ -15,14 +15,20 @@ import ru.mail.evmenova.springbootapp.security.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    private final UserDetailsServiceImpl userDetailsService;
+
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder(8);
         return encoder;
     }
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
